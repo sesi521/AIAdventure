@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI ADVENTURE - Jago Komunikasi Bersama AI</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Fredoka & Plus Jakarta Sans -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        display: ['Fredoka', 'sans-serif'],
+                        body: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            blue: '#3B82F6',
+                            teal: '#14B8A6',
+                            yellow: '#F59E0B',
+                            orange: '#F97316',
+                            purple: '#8B5CF6',
+                            green: '#10B981',
+                            pink: '#EC4899',
+                            bg: '#F0F9FF'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #F0F9FF; }
+        h1, h2, h3, h4, .font-fun { font-family: 'Fredoka', sans-serif; }
+        .bounce-gentle { animation: bounce 2s infinite; }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(-3%); }
+            50% { transform: translateY(0); }
+        }
+        .card-hover { transition: all 0.3s ease; }
+        .card-hover:hover { transform: translateY(-5px); box-shadow: 0 12px 24px -10px rgba(0, 0, 0, 0.15); }
+    </style>
+</head>
+<body class="text-slate-800 min-h-screen flex flex-col justify-between">
+
+    <!-- TOP NAVIGATION BAR -->
+    <header class="bg-white border-b-4 border-blue-200 sticky top-0 z-50 px-4 py-3 shadow-sm">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <!-- Brand Logo -->
+            <button onclick="navTo('home')" class="flex items-center gap-2 text-left group">
+                <div class="w-10 h-10 bg-brand-blue text-white rounded-2xl flex items-center justify-center text-xl font-bold shadow-md group-hover:scale-110 transition-transform">
+                    🤖
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold text-brand-blue leading-none">AI ADVENTURE</h1>
+                    <p class="text-xs text-slate-500 font-semibold">Jago Komunikasi Bersama AI</p>
+                </div>
+            </button>
+
+            <!-- Dashboard Stats & Nav Menu -->
+            <div class="flex items-center gap-3">
+                <div class="bg-amber-100 text-amber-800 px-3 py-1.5 rounded-full font-fun font-bold flex items-center gap-1.5 text-sm border-2 border-amber-300">
+                    ⭐ <span id="user-xp">0</span> XP
+                </div>
+                <div class="bg-rose-100 text-rose-700 px-3 py-1.5 rounded-full font-fun font-bold flex items-center gap-1.5 text-sm border-2 border-rose-300">
+                    ❤️ <span id="user-hearts">5</span>
+                </div>
+                <button onclick="navTo('badges')" class="bg-purple-100 text-purple-700 px-3 py-1.5 rounded-full font-fun font-bold flex items-center gap-1.5 text-sm border-2 border-purple-300 hover:bg-purple-200 transition">
+                    🏆 <span id="badge-count">0</span> Lencana
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT CONTAINER -->
+    <main class="max-w-5xl mx-auto w-full p-4 flex-grow">
+
+        <!-- KIKO MASCOT CONTAINER (Global Dynamic Dialogue) -->
+        <div id="kiko-banner" class="bg-white border-2 border-teal-300 rounded-3xl p-4 mb-6 shadow-md flex items-start gap-4 transition-all">
+            <div id="kiko-avatar" class="text-5xl bg-teal-100 p-3 rounded-2xl border-2 border-teal-200 bounce-gentle shrink-0">
+                🤖
+            </div>
+            <div class="flex-grow">
+                <div class="flex items-center gap-2 mb-1">
+                    <span class="font-fun text-lg font-bold text-teal-700">KIKO</span>
+                    <span id="kiko-mood" class="text-xs bg-teal-50 text-teal-600 px-2 py-0.5 rounded-full border border-teal-200 font-bold">😊 Siap Membantu</span>
+                </div>
+                <p id="kiko-dialogue" class="text-slate-700 font-medium text-sm md:text-base">
+                    Hai! Aku KIKO. Hari ini kita akan belajar bagaimana cara berkomunikasi dengan AI. Siap menjadi AI Explorer?
+                </p>
+            </div>
+        </div>
+
+        <!-- ================= PAGE: BERANDA ================= -->
+        <section id="page-home" class="space-y-8">
+            <div class="bg-gradient-to-r from-blue-500 via-teal-500 to-indigo-600 rounded-3xl p-8 text-white shadow-xl text-center md:text-left flex flex-col md:flex-row items-center justify-between gap-8">
+                <div class="space-y-4 max-w-xl">
+                    <span class="bg-white/20 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider backdrop-blur-md">Media Pembelajaran Interaktif SMP</span>
+                    <h2 class="text-3xl md:text-5xl font-fun font-bold leading-tight">🤖 AI ADVENTURE</h2>
+                    <p class="text-blue-100 text-lg">"Kenali AI, ajak ngobrol, beri perintah, pilah informasi, dan ciptakan sesuatu bersama AI!"</p>
+                    <p class="text-sm text-blue-200 italic">Jelajahi dunia AI melalui permainan, eksperimen, tantangan, dan kreativitas!</p>
+                    <div class="pt-2 flex flex-wrap gap-3 justify-center md:justify-start">
+                        <button onclick="navTo('map')" class="bg-amber-400 hover:bg-amber-300 text-slate-900 font-fun font-bold text-lg px-8 py-4 rounded-2xl shadow-lg hover:scale-105 active:scale-95 transition-all flex items-center gap-2 border-b-4 border-amber-600">
+                            🚀 MULAI PETUALANGAN
+                        </button>
+                        <button onclick="showHelpModal()" class="bg-white/10 hover:bg-white/20 text-white font-fun font-semibold px-5 py-4 rounded-2xl border border-white/30 backdrop-blur-md transition">
+                            📖 Cara Bermain
+                        </button>
+                    </div>
+                </div>
+                <div class="relative w-64 h-64 flex items-center justify-center bg-white/10 rounded-full backdrop-blur-sm border-4 border-white/20">
+                    <div class="text-8xl">🤖</div>
+                    <div class="absolute -top-2 -right-2 text-4xl animate-bounce">💬</div>
+                    <div class="absolute -bottom-2 -left-2 text-4xl">🎨</div>
+                    <div class="absolute top-1/2 -left-6 text-4xl">🔎</div>
+                </div>
+            </div>
+
+            <!-- Identity Tagline Banner -->
+            <div class="bg-amber-50 border-2 border-amber-200 rounded-2xl p-4 text-center">
+                <p class="text-amber-900 font-bold font-fun text-base md:text-lg">
+                    💡 "Belajar AI bukan hanya tentang mengetahui jawabannya, tetapi tentang belajar bertanya, mencoba, menganalisis, mengevaluasi, dan menciptakan."
+                </p>
+                <span class="text-xs text-amber-700 font-semibold tracking-widest uppercase mt-1 block">🤖 TANYAKAN. COBAKAN. ANALISIS. CIPTAKAN!</span>
+            </div>
+        </section>
+
+        <!-- ================= PAGE: PETA PETUALANGAN ================= -->
+        <section id="page-map" class="hidden space-y-6">
+            <div class="text-center space-y-2">
+                <h2 class="text-3xl font-fun font-bold text-slate-800">🗺️ PETA PETUALANGAN AI EXPLORER</h2>
+                <p class="text-slate-600">Selesaikan setiap misi secara berurutan untuk membuka tantangan berikutnya!</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 relative pt-4">
+                <!-- Mission Card 1 -->
+                <div class="bg-white border-4 border-emerald-400 rounded-3xl p-6 shadow-md card-hover relative overflow-hidden flex flex-col justify-between">
+                    <div class="space-y-3">
+                        <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1 rounded-full font-fun">MISI 1</span>
+                        <h3 class="text-xl font-fun font-bold text-slate-800">🌱 Kenalan dengan AI</h3>
+                        <p class="text-sm text-slate-600">Pelajari apa itu AI, jenis-jenisnya, dan mainkan mini game "AI atau Bukan AI?".</p>
+                    </div>
+                    <button onclick="startMission(1)" class="mt-6 w-full bg-emerald-500 hover:bg-emerald-600 text-white font-fun font-bold py-3 rounded-2xl shadow-md transition">
+                        MASUK MISI 1 ➔
+                    </button>
+                </div>
+
+                <!-- Mission Card 2 -->
+                <div id="card-misi-2" class="bg-white border-4 border-blue-400 rounded-3xl p-6 shadow-md card-hover relative overflow-hidden flex flex-col justify-between">
+                    <div class="space-y-3">
+                        <span class="bg-blue-100 text-blue-800 text-xs font-bold px-3 py-1 rounded-full font-fun">MISI 2</span>
+                        <h3 class="text-xl font-fun font-bold text-slate-800">💬 Chatbot Lab</h3>
+                        <p class="text-sm text-slate-600">Ayo ngobrol! Pelajari instruksi yang jelas & susun prompt handal.</p>
+                    </div>
+                    <button onclick="startMission(2)" class="mt-6 w-full bg-blue-500 hover:bg-blue-600 text-white font-fun font-bold py-3 rounded-2xl shadow-md transition">
+                        MASUK MISI 2 ➔
+                    </button>
+                </div>
+
+                <!-- Mission Card 3 -->
+                <div id="card-misi-3" class="bg-white border-4 border-purple-400 rounded-3xl p-6 shadow-md card-hover relative overflow-hidden flex flex-col justify-between">
+                    <div class="space-y-3">
+                        <span class="bg-purple-100 text-purple-800 text-xs font-bold px-3 py-1 rounded-full font-fun">MISI 3</span>
+                        <h3 class="text-xl font-fun font-bold text-slate-800">🧩 Classification Lab</h3>
+                        <p class="text-sm text-slate-600">Jadilah detektif data! Kelompokkan pesan & jenis informasi.</p>
+                    </div>
+                    <button onclick="startMission(3)" class="mt-6 w-full bg-purple-500 hover:bg-purple-600 text-white font-fun font-bold py-3 rounded-2xl shadow-md transition">
+                        MASUK MISI 3 ➔
+                    </button>
+                </div>
+
+                <!-- Mission Card 4 -->
+                <div id="card-misi-4" class="bg-white border-4 border-amber-400 rounded-3xl p-6 shadow-md card-hover relative overflow-hidden flex flex-col justify-between">
+                    <div class="space-y-3">
+                        <span class="bg-amber-100 text-amber-800 text-xs font-bold px-3 py-1 rounded-full font-fun">MISI 4</span>
+                        <h3 class="text-xl font-fun font-bold text-slate-800">🔎 AI Detective</h3>
+                        <p class="text-sm text-slate-600">Analisis kesalahan AI dan temukan alasan di balik jawaban AI.</p>
+                    </div>
+                    <button onclick="startMission(4)" class="mt-6 w-full bg-amber-500 hover:bg-amber-600 text-white font-fun font-bold py-3 rounded-2xl shadow-md transition">
+                        MASUK MISI 4 ➔
+                    </button>
+                </div>
+
+                <!-- Mission Card 5 -->
+                <div id="card-misi-5" class="bg-white border-4 border-pink-400 rounded-3xl p-6 shadow-md card-hover relative overflow-hidden flex flex-col justify-between">
+                    <div class="space-y-3">
+                        <span class="bg-pink-100 text-pink-800 text-xs font-bold px-3 py-1 rounded-full font-fun">MISI 5</span>
+                        <h3 class="text-xl font-fun font-bold text-slate-800">🎨 AI Design Lab</h3>
+                        <p class="text-sm text-slate-600">Rancang karya keren (poster, ide proyek) berbantuan AI!</p>
+                    </div>
+                    <button onclick="startMission(5)" class="mt-6 w-full bg-pink-500 hover:bg-pink-600 text-white font-fun font-bold py-3 rounded-2xl shadow-md transition">
+                        MASUK MISI 5 ➔
+                    </button>
+                </div>
+
+                <!-- Final Mission Card -->
+                <div id="card-misi-final" class="bg-white border-4 border-indigo-500 rounded-3xl p-6 shadow-md card-hover relative overflow-hidden flex flex-col justify-between">
+                    <div class="space-y-3">
+                        <span class="bg-indigo-100 text-indigo-800 text-xs font-bold px-3 py-1 rounded-full font-fun">FINAL MISSION</span>
+                        <h3 class="text-xl font-fun font-bold text-slate-800">🏆 AI Explorer Challenge</h3>
+                        <p class="text-sm text-slate-600">Tantangan akhir: Buat kampanye AI Aman & Bertanggung Jawab!</p>
+                    </div>
+                    <button onclick="startMission(6)" class="mt-6 w-full bg-indigo-600 hover:bg-indigo-700 text-white font-fun font-bold py-3 rounded-2xl shadow-md transition">
+                        TANTANGAN AKHIR 🏆
+                    </button>
+                </div>
+            </div>
+
+            <!-- Quiz Bank Navigation Link -->
+            <div class="pt-4 text-center">
+                <button onclick="navTo('quiz-bank')" class="bg-teal-600 text-white font-fun font-bold px-6 py-3 rounded-2xl shadow hover:bg-teal-700 transition">
+                    📝 Uji Kemampuan: Bank Soal & Tantangan Drag-Drop
+                </button>
+            </div>
+        </section>
+
+        <!-- ================= PAGE: MISI 1 ================= -->
+        <section id="page-misi1" class="hidden space-y-8">
+            <div class="flex justify-between items-center border-b pb-4">
+                <h2 class="text-2xl font-fun font-bold text-emerald-700">🌱 MISI 1: KENALAN DENGAN AI</h2>
+                <button onclick="navTo('map')" class="text-slate-500 hover:text-slate-800 text-sm font-bold">✕ Keluar Peta</button>
+            </div>
+
+            <p class="text-slate-700">Klik setiap kartu untuk berkenalan dengan berbagai jenis aplikasi Kecerdasan Artifisial (AI):</p>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <button onclick="explainAI('chatbot')" class="bg-white p-4 rounded-2xl border-2 border-emerald-200 shadow hover:border-emerald-500 text-center space-y-2 card-hover">
+                    <div class="text-4xl">🤖</div>
+                    <div class="font-fun font-bold text-slate-800">Chatbot</div>
+                </button>
+                <button onclick="explainAI('gambar')" class="bg-white p-4 rounded-2xl border-2 border-emerald-200 shadow hover:border-emerald-500 text-center space-y-2 card-hover">
+                    <div class="text-4xl">🎨</div>
+                    <div class="font-fun font-bold text-slate-800">AI Gambar</div>
+                </button>
+                <button onclick="explainAI('suara')" class="bg-white p-4 rounded-2xl border-2 border-emerald-200 shadow hover:border-emerald-500 text-center space-y-2 card-hover">
+                    <div class="text-4xl">🎤</div>
+                    <div class="font-fun font-bold text-slate-800">AI Suara</div>
+                </button>
+                <button onclick="explainAI('translator')" class="bg-white p-4 rounded-2xl border-2 border-emerald-200 shadow hover:border-emerald-500 text-center space-y-2 card-hover">
+                    <div class="text-4xl">🌎</div>
+                    <div class="font-fun font-bold text-slate-800">Translator</div>
+                </button>
+                <button onclick="explainAI('penulis')" class="bg-white p-4 rounded-2xl border-2 border-emerald-200 shadow hover:border-emerald-500 text-center space-y-2 card-hover">
+                    <div class="text-4xl">✍️</div>
+                    <div class="font-fun font-bold text-slate-800">AI Penulis</div>
+                </button>
+                <button onclick="explainAI('musik')" class="bg-white p-4 rounded-2xl border-2 border-emerald-200 shadow hover:border-emerald-500 text-center space-y-2 card-hover">
+                    <div class="text-4xl">🎵</div>
+                    <div class="font-fun font-bold text-slate-800">AI Musik</div>
+                </button>
+                <button onclick="explainAI('asisten')" class="bg-white p-4 rounded-2xl border-2 border-emerald-200 shadow hover:border-emerald-500 text-center space-y-2 card-hover">
+                    <div class="text-4xl">📱</div>
+                    <div class="font-fun font-bold text-slate-800">Asisten Virtual</div>
+                </button>
+            </div>
+
+            <!-- Mini Game: AI atau Bukan AI? -->
+            <div class="bg-emerald-50 border-2 border-emerald-300 rounded-3xl p-6 space-y-4">
+                <h3 class="text-xl font-fun font-bold text-emerald-900">🎮 Mini Game: "AI ATAU BUKAN AI?"</h3>
+                <p class="text-slate-700 text-sm">Tebak apakah benda/teknologi berikut memanfaatkan sistem AI atau tidak!</p>
+
+                <div id="minigame-card" class="bg-white p-6 rounded-2xl border-2 border-emerald-200 shadow text-center max-w-md mx-auto space-y-4">
+                    <div id="mg-icon" class="text-6xl">🤖</div>
+                    <div id="mg-title" class="text-2xl font-fun font-bold text-slate-800">Chatbot Layanan Pelanggan</div>
+                    <div class="flex justify-center gap-4">
+                        <button onclick="answerMiniGame(true)" class="bg-emerald-500 hover:bg-emerald-600 text-white font-fun font-bold px-6 py-2.5 rounded-xl shadow">
+                            🤖 AI
+                        </button>
+                        <button onclick="answerMiniGame(false)" class="bg-slate-500 hover:bg-slate-600 text-white font-fun font-bold px-6 py-2.5 rounded-xl shadow">
+                            📦 BUKAN AI
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PAGE: MISI 2 (CHATBOT LAB) ================= -->
+        <section id="page-misi2" class="hidden space-y-8">
+            <div class="flex justify-between items-center border-b pb-4">
+                <h2 class="text-2xl font-fun font-bold text-blue-700">💬 MISI 2: CHATBOT LAB</h2>
+                <button onclick="navTo('map')" class="text-slate-500 hover:text-slate-800 text-sm font-bold">✕ Keluar Peta</button>
+            </div>
+
+            <!-- Tabs Level -->
+            <div class="flex border-b border-slate-200 gap-2">
+                <button onclick="switchM2Tab(1)" id="tab-m2-1" class="px-4 py-2 font-fun font-bold border-b-4 border-blue-500 text-blue-600">Level 1: Coba Bicara</button>
+                <button onclick="switchM2Tab(2)" id="tab-m2-2" class="px-4 py-2 font-fun font-bold text-slate-500">Level 2: Input Jelas vs Ambigu</button>
+                <button onclick="switchM2Tab(3)" id="tab-m2-3" class="px-4 py-2 font-fun font-bold text-slate-500">Level 3: Prompt Builder</button>
+            </div>
+
+            <!-- Tab 1: Coba Bicara -->
+            <div id="m2-content-1" class="space-y-4">
+                <div class="bg-white border-2 border-slate-200 rounded-3xl p-4 h-64 overflow-y-auto space-y-3" id="chat-box">
+                    <div class="flex items-start gap-2">
+                        <div class="text-2xl">🤖</div>
+                        <div class="bg-blue-100 text-blue-900 p-3 rounded-2xl max-w-xs text-sm">
+                            Halo! Tanyakan sesuatu padaku. Kamu bisa pakai tombol cepat di bawah atau ketik sendiri!
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-wrap gap-2">
+                    <button onclick="sendQuickPrompt('Beri aku 3 ide kegiatan untuk menjaga lingkungan sekolah.')" class="bg-blue-50 hover:bg-blue-100 text-blue-700 text-xs font-semibold px-3 py-2 rounded-xl border border-blue-200">
+                        💡 Ide Kebersihan Sekolah
+                    </button>
+                    <button onclick="sendQuickPrompt('Jelaskan apa itu fotositeis dengan bahasa sederhana.')" class="bg-blue-50 hover:bg-blue-100 text-blue-700 text-xs font-semibold px-3 py-2 rounded-xl border border-blue-200">
+                        📚 Fotosintesis Singkat
+                    </button>
+                    <button onclick="sendQuickPrompt('Buatkan poster hemat energi untuk siswa SMP.')" class="bg-blue-50 hover:bg-blue-100 text-blue-700 text-xs font-semibold px-3 py-2 rounded-xl border border-blue-200">
+                        🎨 Ide Poster Energi
+                    </button>
+                </div>
+
+                <div class="flex gap-2">
+                    <input type="text" id="chat-input" placeholder="Ketik pesan untuk KIKO..." class="flex-grow p-3 border-2 border-slate-200 rounded-2xl focus:outline-none focus:border-blue-500">
+                    <button onclick="sendUserChat()" class="bg-blue-500 text-white font-fun font-bold px-6 rounded-2xl hover:bg-blue-600 transition">
+                        Kirim
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tab 2: Input Jelas vs Ambigu -->
+            <div id="m2-content-2" class="hidden space-y-4">
+                <p class="text-slate-700 font-medium">Bandingkan dua instruksi (prompt) di bawah ini. Mana yang memberikan hasil lebih tepat dari AI?</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div onclick="choosePromptComparison('A')" class="bg-white p-6 rounded-3xl border-4 border-slate-200 hover:border-rose-400 cursor-pointer space-y-3 card-hover">
+                        <span class="bg-slate-100 text-slate-700 text-xs font-bold px-3 py-1 rounded-full font-fun">INPUT A</span>
+                        <p class="font-semibold text-slate-800">"Buat poster."</p>
+                    </div>
+                    <div onclick="choosePromptComparison('B')" class="bg-white p-6 rounded-3xl border-4 border-slate-200 hover:border-emerald-500 cursor-pointer space-y-3 card-hover">
+                        <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1 rounded-full font-fun">INPUT B</span>
+                        <p class="font-semibold text-slate-800">"Buat ide poster hemat energi untuk siswa SMP, gunakan bahasa sederhana dan sertakan 3 ajakan."</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 3: Prompt Builder -->
+            <div id="m2-content-3" class="hidden space-y-6">
+                <p class="text-slate-700 font-medium">Pilih komponen untuk menyusun prompt sempurna!</p>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-600 mb-1">🧑‍🏫 Peran</label>
+                        <select id="pb-peran" class="w-full p-2 border border-slate-300 rounded-xl text-sm">
+                            <option value="Sebagai guru IPA ramah">Guru IPA Ramah</option>
+                            <option value="Sebagai desainer grafis kreatif">Desainer Grafis</option>
+                            <option value="Sebagai kapten OSIS">Kapten OSIS</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-600 mb-1">🎯 Tujuan</label>
+                        <select id="pb-tujuan" class="w-full p-2 border border-slate-300 rounded-xl text-sm">
+                            <option value="membuat ide kegiatan kebersihan">Ide Kebersihan</option>
+                            <option value="menjelaskan konsep AI">Menjelaskan AI</option>
+                            <option value="merancang slogan motivasi">Slogan Motivasi</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-600 mb-1">👦 Sasaran</label>
+                        <select id="pb-sasaran" class="w-full p-2 border border-slate-300 rounded-xl text-sm">
+                            <option value="untuk siswa SMP kelas 7-9">Siswa SMP</option>
+                            <option value="untuk anak SD">Anak SD</option>
+                            <option value="untuk guru sekolah">Guru Sekolah</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="bg-slate-100 p-4 rounded-2xl space-y-2">
+                    <span class="text-xs font-bold text-slate-500 uppercase">Hasil Prompt Terbentuk:</span>
+                    <p id="pb-result" class="font-semibold text-slate-800 italic">"Sebagai guru IPA ramah, buat ide kegiatan kebersihan untuk siswa SMP kelas 7-9."</p>
+                </div>
+
+                <button onclick="runPromptBuilder()" class="bg-blue-600 text-white font-fun font-bold px-6 py-3 rounded-2xl shadow hover:bg-blue-700 transition">
+                    🚀 COBA PROMPT INI
+                </button>
+            </div>
+        </section>
+
+        <!-- ================= PAGE: MISI 3 (CLASSIFICATION LAB) ================= -->
+        <section id="page-misi3" class="hidden space-y-8">
+            <div class="flex justify-between items-center border-b pb-4">
+                <h2 class="text-2xl font-fun font-bold text-purple-700">🧩 MISI 3: CLASSIFICATION LAB</h2>
+                <button onclick="navTo('map')" class="text-slate-500 hover:text-slate-800 text-sm font-bold">✕ Keluar Peta</button>
+            </div>
+
+            <div class="bg-purple-50 p-6 rounded-3xl border-2 border-purple-200 space-y-4">
+                <h3 class="text-lg font-fun font-bold text-purple-900">Jadilah Detektif Data! 🔎</h3>
+                <p class="text-slate-700 text-sm">Klasifikasikan kartu kalimat berikut ke dalam kategori yang tepat:</p>
+
+                <div id="class-card" class="bg-white p-6 rounded-2xl border-2 border-purple-300 shadow text-center max-w-lg mx-auto space-y-4">
+                    <p id="class-text" class="text-lg font-bold text-slate-800">"Apa manfaat utama chatbot dalam belajar?"</p>
+                    
+                    <div class="grid grid-cols-2 gap-2 pt-2">
+                        <button onclick="classifyItem('PERTANYAAN')" class="bg-blue-100 hover:bg-blue-200 text-blue-800 font-fun font-bold py-2 rounded-xl text-sm border border-blue-300">
+                            💬 PERTANYAAN
+                        </button>
+                        <button onclick="classifyItem('INFORMASI')" class="bg-emerald-100 hover:bg-emerald-200 text-emerald-800 font-fun font-bold py-2 rounded-xl text-sm border border-emerald-300">
+                            📚 INFORMASI
+                        </button>
+                        <button onclick="classifyItem('INSTRUKSI')" class="bg-amber-100 hover:bg-amber-200 text-amber-800 font-fun font-bold py-2 rounded-xl text-sm border border-amber-300">
+                            🎯 INSTRUKSI
+                        </button>
+                        <button onclick="classifyItem('APRESIASI')" class="bg-pink-100 hover:bg-pink-200 text-pink-800 font-fun font-bold py-2 rounded-xl text-sm border border-pink-300">
+                            ❤️ APRESIASI
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PAGE: MISI 4 (AI DETECTIVE) ================= -->
+        <section id="page-misi4" class="hidden space-y-8">
+            <div class="flex justify-between items-center border-b pb-4">
+                <h2 class="text-2xl font-fun font-bold text-amber-700">🔎 MISI 4: AI DETECTIVE</h2>
+                <button onclick="navTo('map')" class="text-slate-500 hover:text-slate-800 text-sm font-bold">✕ Keluar Peta</button>
+            </div>
+
+            <div class="bg-amber-50 border-2 border-amber-300 rounded-3xl p-6 space-y-4">
+                <span class="bg-amber-200 text-amber-900 text-xs font-bold px-3 py-1 rounded-full font-fun">STUDI KASUS DETEKTIF</span>
+                <p class="text-slate-800 font-semibold text-lg">
+                    Sebuah sistem AI mengelompokkan pesan berikut sebagai kategori <span class="text-emerald-600 font-bold">POSITIF</span>:
+                </p>
+                <div class="bg-white p-4 rounded-2xl border border-amber-200 italic text-slate-700 font-serif">
+                    "Aplikasi ini fiturnya bagus, tetapi sering error dan membuat saya sangat kesal."
+                </div>
+
+                <p class="text-slate-800 font-bold">Apakah kamu setuju dengan klasifikasi AI tersebut?</p>
+
+                <div class="flex flex-wrap gap-3">
+                    <button onclick="detectiveAnswer('setuju')" class="bg-white border-2 border-slate-300 hover:border-amber-500 px-6 py-3 rounded-2xl font-fun font-bold text-slate-700 shadow-sm">
+                        👍 Setuju
+                    </button>
+                    <button onclick="detectiveAnswer('ragu')" class="bg-white border-2 border-slate-300 hover:border-amber-500 px-6 py-3 rounded-2xl font-fun font-bold text-slate-700 shadow-sm">
+                        🤔 Tidak Yakin
+                    </button>
+                    <button onclick="detectiveAnswer('tidak')" class="bg-white border-2 border-amber-400 hover:border-amber-600 bg-amber-100 px-6 py-3 rounded-2xl font-fun font-bold text-amber-900 shadow-sm">
+                        👎 Tidak Setuju
+                    </button>
+                </div>
+
+                <div id="detective-feedback" class="hidden bg-white p-4 rounded-2xl border-2 border-amber-300 space-y-2">
+                    <p class="text-slate-800 text-sm font-medium">
+                        💡 <strong>Penjelasan KIKO:</strong> Bagus! Kalimat di atas mengandung kritik tajam meskipun diawali kata "bagus". AI seringkali hanya menghitung kata kunci tanpa memahami konteks kalimat utuh!
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PAGE: MISI 5 (AI DESIGN LAB) ================= -->
+        <section id="page-misi5" class="hidden space-y-8">
+            <div class="flex justify-between items-center border-b pb-4">
+                <h2 class="text-2xl font-fun font-bold text-pink-700">🎨 MISI 5: AI DESIGN LAB</h2>
+                <button onclick="navTo('map')" class="text-slate-500 hover:text-slate-800 text-sm font-bold">✕ Keluar Peta</button>
+            </div>
+
+            <div class="bg-white border-2 border-pink-200 rounded-3xl p-6 shadow-md space-y-6">
+                <h3 class="text-xl font-fun font-bold text-slate-800">Rancang Karya Kreatif Berbantuan AI! 🚀</h3>
+                
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-600 mb-1">1. PILIH PROJEK</label>
+                        <select id="des-projek" class="w-full p-3 border border-slate-300 rounded-xl font-semibold">
+                            <option>🎨 Poster Edukasi</option>
+                            <option>📊 Infografis Ringkas</option>
+                            <option>💡 Ide Proyek OSIS</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-600 mb-1">2. TENTUKAN TUJUAN & SASARAN</label>
+                        <input type="text" id="des-tujuan" placeholder="Contoh: Mengajak siswa memilah sampah plastik" class="w-full p-3 border border-slate-300 rounded-xl text-sm">
+                    </div>
+
+                    <button onclick="generateAIDesign()" class="w-full bg-pink-500 hover:bg-pink-600 text-white font-fun font-bold py-3 rounded-2xl shadow transition">
+                        ✨ GENERATE HASIL RANCANGAN AI
+                    </button>
+                </div>
+
+                <!-- Generated Result Container -->
+                <div id="design-output" class="hidden bg-pink-50 border-2 border-pink-300 rounded-2xl p-6 space-y-4">
+                    <span class="bg-pink-200 text-pink-900 text-xs font-bold px-3 py-1 rounded-full font-fun">HASIL GENERATE AI (VERSI 1)</span>
+                    <div id="design-content" class="bg-white p-4 rounded-xl border border-pink-200 text-slate-800 space-y-2">
+                        <!-- Dynamic output -->
+                    </div>
+
+                    <div class="pt-2">
+                        <label class="block text-xs font-bold text-slate-700 mb-2">⭐ Evaluasi Hasil AI ini:</label>
+                        <div class="flex gap-2">
+                            <button onclick="evaluateDesign(1)" class="bg-white border px-3 py-1.5 rounded-xl text-xs font-bold">Kurang Jelas</button>
+                            <button onclick="evaluateDesign(2)" class="bg-white border px-3 py-1.5 rounded-xl text-xs font-bold">Cukup Bagus</button>
+                            <button onclick="evaluateDesign(3)" class="bg-emerald-500 text-white px-3 py-1.5 rounded-xl text-xs font-bold">Sangat Pas! 🎉</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PAGE: FINAL MISSION ================= -->
+        <section id="page-misi6" class="hidden space-y-8">
+            <div class="bg-gradient-to-br from-indigo-600 to-purple-700 text-white p-8 rounded-3xl shadow-xl space-y-6">
+                <div class="text-center space-y-2">
+                    <span class="bg-amber-400 text-slate-900 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider font-fun">TANTANGAN AKHIR</span>
+                    <h2 class="text-3xl font-fun font-bold">🏆 AI EXPLORER FINAL MISSION</h2>
+                    <p class="text-indigo-100 text-sm">Sekolah ingin membuat kampanye digital: "Penggunaan AI yang Aman & Bertanggung Jawab".</p>
+                </div>
+
+                <div class="bg-white/10 backdrop-blur-md p-6 rounded-2xl border border-white/20 space-y-4">
+                    <h3 class="font-fun font-bold text-lg text-amber-300">Langkah Misi Kampanye:</h3>
+                    <ul class="text-sm space-y-2 list-disc list-inside text-indigo-100">
+                        <li>Tentukan Sasaran Kampanye (Siswa/Guru)</li>
+                        <li>Susun Prompt Instruksi AI yang jelas</li>
+                        <li>Evaluasi kelaikan konten sebelum dipublikasikan</li>
+                    </ul>
+                </div>
+
+                <button onclick="finishFinalMission()" class="w-full bg-amber-400 hover:bg-amber-300 text-slate-900 font-fun font-bold py-4 rounded-2xl text-lg shadow-lg transition">
+                    🚀 SELESAIKAN MISI & AMBIL SERTIFIKAT!
+                </button>
+            </div>
+        </section>
+
+        <!-- ================= PAGE: QUIZ & DRAG-DROP BANK ================= -->
+        <section id="page-quiz-bank" class="hidden space-y-8">
+            <div class="flex justify-between items-center border-b pb-4">
+                <h2 class="text-2xl font-fun font-bold text-teal-700">📝 BANK SOAL & TANTANGAN INTERAKTIF</h2>
+                <button onclick="navTo('map')" class="text-slate-500 hover:text-slate-800 text-sm font-bold">✕ Keluar Peta</button>
+            </div>
+
+            <div class="bg-white border-2 border-teal-200 rounded-3xl p-6 space-y-6 shadow-sm">
+                <div class="flex justify-between items-center">
+                    <span class="text-xs font-bold text-slate-500 uppercase">Soal Pilihan Ganda Interaktif</span>
+                    <span id="quiz-progress" class="text-xs bg-teal-100 text-teal-800 font-bold px-2.5 py-1 rounded-full">Soal 1 dari 5</span>
+                </div>
+
+                <div id="quiz-container" class="space-y-4">
+                    <h3 id="quiz-question" class="text-lg font-bold text-slate-800">
+                        Rani ingin meminta AI membuat ide poster tentang kebersihan kelas. Input mana yang paling jelas?
+                    </h3>
+                    <div id="quiz-options" class="space-y-2">
+                        <!-- Generated options -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PAGE: BADGES & REFLECTION ================= -->
+        <section id="page-badges" class="hidden space-y-8">
+            <div class="flex justify-between items-center border-b pb-4">
+                <h2 class="text-2xl font-fun font-bold text-purple-700">🏆 LENCANA & PROGRES SAYA</h2>
+                <button onclick="navTo('home')" class="text-slate-500 hover:text-slate-800 text-sm font-bold">✕ Beranda</button>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                <div class="bg-white border-2 border-amber-300 p-4 rounded-2xl text-center space-y-2">
+                    <div class="text-5xl">🌟</div>
+                    <div class="font-fun font-bold text-slate-800">AI Beginner</div>
+                    <p class="text-xs text-slate-500">Menyelesaikan Misi 1</p>
+                </div>
+                <div class="bg-white border-2 border-blue-300 p-4 rounded-2xl text-center space-y-2">
+                    <div class="text-5xl">💬</div>
+                    <div class="font-fun font-bold text-slate-800">Chatbot Explorer</div>
+                    <p class="text-xs text-slate-500">Menguasai Prompting</p>
+                </div>
+                <div class="bg-white border-2 border-purple-300 p-4 rounded-2xl text-center space-y-2">
+                    <div class="text-5xl">🧩</div>
+                    <div class="font-fun font-bold text-slate-800">Classification Detective</div>
+                    <p class="text-xs text-slate-500">Ahli Klasifikasi Data</p>
+                </div>
+            </div>
+
+            <!-- Student Reflection Box -->
+            <div class="bg-purple-50 border-2 border-purple-200 rounded-3xl p-6 space-y-4">
+                <h3 class="text-lg font-fun font-bold text-purple-900">💭 Refleksi Siswa</h3>
+                <p class="text-sm text-slate-700">Apa hal paling menarik yang kamu temukan tentang AI hari ini?</p>
+                <textarea class="w-full p-3 border border-purple-200 rounded-2xl text-sm focus:outline-none focus:border-purple-500" rows="3" placeholder="Tuliskan pendapatmu di sini..."></textarea>
+                <button onclick="saveReflection()" class="bg-purple-600 text-white font-fun font-bold px-6 py-2.5 rounded-xl shadow hover:bg-purple-700 transition">
+                    Simpan Refleksi
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-white border-t border-slate-200 p-4 text-center text-xs text-slate-500 font-medium">
+        🤖 AI ADVENTURE — "Kenali AI, ajak ngobrol, beri perintah, pilah informasi, dan ciptakan sesuatu bersama AI!"
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // Global Game State
+        const state = {
+            xp: 0,
+            hearts: 5,
+            unlockedMissions: [1],
+            badges: [],
+            currentQuizIdx: 0
+        };
+
+        // KIKO Mascot Speech System
+        function setKiko(moodEmoji, moodText, message) {
+            document.getElementById('kiko-avatar').textContent = moodEmoji;
+            document.getElementById('kiko-mood').textContent = moodText;
+            document.getElementById('kiko-dialogue').textContent = message;
+        }
+
+        // Navigation Engine
+        function navTo(pageId) {
+            const pages = ['home', 'map', 'misi1', 'misi2', 'misi3', 'misi4', 'misi5', 'misi6', 'quiz-bank', 'badges'];
+            pages.forEach(p => {
+                const el = document.getElementById(`page-${p}`);
+                if (el) el.classList.add('hidden');
+            });
+            document.getElementById(`page-${pageId}`).classList.remove('hidden');
+
+            // Set contextual dialogue
+            if (pageId === 'home') {
+                setKiko('😊', '😊 Siap Membantu', 'Hai! Aku KIKO. Hari ini kita akan belajar bagaimana cara berkomunikasi dengan AI. Siap menjadi AI Explorer?');
+            } else if (pageId === 'map') {
+                setKiko('🚀', '🚀 Petualangan Map', 'Pilih misi yang terbuka untuk melanjutkan petualanganmu!');
+            } else if (pageId === 'quiz-bank') {
+                renderQuiz();
+            }
+        }
+
+        function addXP(amount) {
+            state.xp += amount;
+            document.getElementById('user-xp').textContent = state.xp;
+        }
+
+        function startMission(num) {
+            navTo(`misi${num}`);
+            if (num === 1) {
+                setKiko('🌱', '🌱 Misi 1', 'Yuk klik kartu-kartu di bawah untuk berkenalan dengan kecerdasan artifisial!');
+            } else if (num === 2) {
+                setKiko('💬', '💬 Chatbot Lab', 'Mari belajar berkomunikasi dengan AI menggunakan instruksi (prompt) yang jelas!');
+            }
+        }
+
+        // Misi 1 Functions
+        const aiInfo = {
+            'chatbot': 'Aku bisa berinteraksi dengan manusia melalui percakapan dan memberikan respons berdasarkan input yang diberikan.',
+            'gambar': 'Aku bisa menghasilkan gambar atau lukisan baru hanya dari deskripsi teks yang kamu berikan!',
+            'suara': 'Aku bisa mengenali perintah suara manusia dan mengubah suara menjadi teks atau sebaliknya.',
+            'translator': 'Aku bisa menerjemahkan berbagai bahasa di seluruh dunia secara otomatis dan cepat.',
+            'penulis': 'Aku membantu merangkum cerita, membuat puisi, atau menyusun draf esai.',
+            'musik': 'Aku bisa menciptakan nada dan nada musik baru berdasarkan genre yang kamu pilih.',
+            'asisten': 'Aku membantu mengatur jadwal, mengingatkan tugas, dan menjawab pertanyaan harianmu.'
+        };
+
+        function explainAI(type) {
+            setKiko('💡', '💡 Penjelasan KIKO', aiInfo[type] || 'AI adalah teknologi yang dilatih untuk memproses pola data.');
+            addXP(10);
+        }
+
+        // Mini Game Logic
+        const miniGameItems = [
+            { title: 'Chatbot Layanan Pelanggan', isAI: true, icon: '🤖' },
+            { title: 'Kalkulator Matematika Biasa', isAI: false, icon: '🔢' },
+            { title: 'Rekomendasi Video YouTube', isAI: true, icon: '📺' },
+            { title: 'Jam Dinding Dapur', isAI: false, icon: '⏰' }
+        ];
+        let mgIdx = 0;
+
+        function answerMiniGame(userGuess) {
+            const current = miniGameItems[mgIdx];
+            if (userGuess === current.isAI) {
+                setKiko('🎉', '🎉 Bersenang-senang!', 'Benar sekali! Kamu berhasil menemukan teknologi yang menggunakan AI.');
+                addXP(20);
+            } else {
+                setKiko('🤔', '🤔 Coba Perhatikan', 'Coba perhatikan apakah sistem tersebut dapat memproses pola data dan memberikan prediksi!');
+            }
+            mgIdx = (mgIdx + 1) % miniGameItems.length;
+            document.getElementById('mg-icon').textContent = miniGameItems[mgIdx].icon;
+            document.getElementById('mg-title').textContent = miniGameItems[mgIdx].title;
+        }
+
+        // Misi 2 Tab Switching
+        function switchM2Tab(tabNum) {
+            [1, 2, 3].forEach(n => {
+                document.getElementById(`m2-content-${n}`).classList.add('hidden');
+                document.getElementById(`tab-m2-${n}`).className = "px-4 py-2 font-fun font-bold text-slate-500";
+            });
+            document.getElementById(`m2-content-${tabNum}`).classList.remove('hidden');
+            document.getElementById(`tab-m2-${tabNum}`).className = "px-4 py-2 font-fun font-bold border-b-4 border-blue-500 text-blue-600";
+        }
+
+        function sendQuickPrompt(promptText) {
+            document.getElementById('chat-input').value = promptText;
+            sendUserChat();
+        }
+
+        function sendUserChat() {
+            const input = document.getElementById('chat-input');
+            const chatBox = document.getElementById('chat-box');
+            if (!input.value.trim()) return;
+
+            const userMsg = input.value;
+            chatBox.innerHTML += `
+                <div class="flex items-start gap-2 justify-end">
+                    <div class="bg-blue-600 text-white p-3 rounded-2xl max-w-xs text-sm">${userMsg}</div>
+                    <div class="text-2xl">👦</div>
+                </div>
+            `;
+            input.value = '';
+
+            setTimeout(() => {
+                chatBox.innerHTML += `
+                    <div class="flex items-start gap-2">
+                        <div class="text-2xl">🤖</div>
+                        <div class="bg-blue-100 text-blue-900 p-3 rounded-2xl max-w-xs text-sm">
+                            Ini jawaban simulasi AI untukmu: "Terima kasih! Pertanyaanmu sangat menarik. Selalu pastikan memberikan detail yang jelas ya!"
+                        </div>
+                    </div>
+                `;
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }, 600);
+        }
+
+        function choosePromptComparison(choice) {
+            if (choice === 'B') {
+                setKiko('🎉', '🎉 Tepat Sekali!', 'Input B jauh lebih jelas! AI dapat memahami konteks (siswa SMP), tema (hemat energi), dan jumlah ajakan (3).');
+                addXP(30);
+            } else {
+                setKiko('😅', '😅 Masih Ambigu', 'Input A terlalu singkat. AI akan bingung poster seperti apa yang kamu harapkan.');
+            }
+        }
+
+        function runPromptBuilder() {
+            setKiko('🚀', '🚀 Prompt Berhasil!', 'Hasil prompt terstrukturmu berhasil dikirim ke AI! AI sekarang paham peran dan tujuanmu secara spesifik.');
+            addXP(30);
+        }
+
+        // Misi 3 Classification Logic
+        function classifyItem(category) {
+            setKiko('🎉', '🎉 Klasifikasi Tepat!', `Hebat! Kartu pesan ini memang termasuk kategori ${category}.`);
+            addXP(25);
+        }
+
+        // Misi 4 AI Detective Logic
+        function detectiveAnswer(ans) {
+            document.getElementById('detective-feedback').classList.remove('hidden');
+            if (ans === 'tidak') {
+                setKiko('💡', '💡 Detektif Cerdas!', 'Tepat sekali! AI salah memahami emosi pengguna karena ada kata-kata kontradiktif.');
+                addXP(40);
+            }
+        }
+
+        // Misi 5 Design Lab Logic
+        function generateAIDesign() {
+            const output = document.getElementById('design-output');
+            const content = document.getElementById('design-content');
+            output.classList.remove('hidden');
+            content.innerHTML = `
+                <h4 class="font-bold text-pink-700">🎨 Draft Konsep Poster:</h4>
+                <p class="text-sm">"Jaga Kebersihan, Buang Plastik pada Tempatnya!"</p>
+                <p class="text-xs text-slate-500">Visual: Karakter maskot memegang tempat sampah ramah lingkungan.</p>
+            `;
+            setKiko('🎨', '🎨 Design Lab', 'AI telah merancang draf awal berdasarkan inputmu! Yuk evaluasi kinerjanya.');
+        }
+
+        function evaluateDesign(stars) {
+            setKiko('🎉', '🎉 Evaluasi Selesai', 'Proses IDE → INPUT → HASIL → EVALUASI → PERBAIKAN adalah kunci utama bekerja bersama AI!');
+            addXP(50);
+        }
+
+        function finishFinalMission() {
+            alert('🎉 SLAMAT! Kamu telah menyelesaikan semua Misi dan resmi menjadi AI EXPLORER!');
+            document.getElementById('badge-count').textContent = '3';
+            navTo('badges');
+        }
+
+        // Quiz System
+        const quizBank = [
+            {
+                q: "Rani ingin meminta AI membuat ide poster tentang kebersihan kelas. Input mana yang paling jelas?",
+                opts: [
+                    "Buat poster.",
+                    "Buat poster kebersihan.",
+                    "Buat poster kebersihan kelas untuk siswa SMP, gunakan bahasa sederhana, 3 ajakan, dan slogan singkat.",
+                    "Buat poster yang bagus."
+                ],
+                ans: 2
+            },
+            {
+                q: "Apa yang harus kamu lakukan jika jawaban yang diberikan AI terasa kurang akurat?",
+                opts: [
+                    "Langsung mempercayai jawaban tersebut",
+                    "Memeriksa ulang informasi dan memperjelas instruksi (prompt)",
+                    "Menutup aplikasi dan tidak menggunakannya lagi",
+                    "Marah pada komputer"
+                ],
+                ans: 1
+            }
+        ];
+
+        function renderQuiz() {
+            const q = quizBank[state.currentQuizIdx];
+            document.getElementById('quiz-question').textContent = q.q;
+            const optsContainer = document.getElementById('quiz-options');
+            optsContainer.innerHTML = '';
+
+            q.opts.forEach((opt, idx) => {
+                optsContainer.innerHTML += `
+                    <button onclick="checkQuizAnswer(${idx})" class="w-full text-left p-3 rounded-xl border border-slate-200 hover:border-teal-500 font-medium text-sm transition">
+                        ${String.fromCharCode(65 + idx)}. ${opt}
+                    </button>
+                `;
+            });
+        }
+
+        function checkQuizAnswer(idx) {
+            if (idx === quizBank[state.currentQuizIdx].ans) {
+                setKiko('🎉', '🎉 Benar!', 'Jawabanmu tepat sekali!');
+                addXP(20);
+            } else {
+                setKiko('🤔', '🤔 Coba Lagi', 'Belum tepat, yuk coba perhatikan kembali instruksinya!');
+            }
+        }
+
+        function saveReflection() {
+            alert('Refleksi berhasil disimpan! Terima kasih sudah menjadi AI Explorer yang kritis.');
+        }
+
+        function showHelpModal() {
+            alert('📖 Cara Bermain:\n1. Jalani Misi dari Peta Petualangan secara berurutan.\n2. Kumpulkan XP dan Lencana.\n3. Cobalah bereksperimen dengan perintah (prompt) AI!');
+        }
+    </script>
+</body>
+</html>
